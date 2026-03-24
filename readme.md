@@ -1,5 +1,5 @@
 ## What does the program do? / Que es lo que hace el programa?
-- The program takes the basic data of an amortized loan, such as the principle, interest rate, and how long it's meant to be paid for, and breaks it down for the user.
+- The program takes the basic data of an amortized loan, such as the principal, interest rate, and how long it's meant to be paid for, and breaks it down for the user.
 - El programa toma los datos basicos de un prestamo amortizado, como el principal, la tasa de interes, y el plazo de tiempo en la cual debe ser pagado, y lo desglosa para el usuario.
 
 ## Why did I make it? / Porque lo cree? 
