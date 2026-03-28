@@ -1,11 +1,12 @@
-# amortization.py
-
+# Requires pip
 from tabulate import tabulate
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 
+# Does not require pip
+import csv
 
-# ── Input Collection ──────────────────────────────────────────────
+# Input Collection
 def get_inputs():
     """Prompt the user for loan parameters with validation."""
 
@@ -43,7 +44,7 @@ def get_inputs():
     return principal, annual_rate, years
 
 
-# ── Core Calculation ──────────────────────────────────────────────
+# Core Calculation
 def calculate_schedule(principal, annual_rate, years):
     """Return a list of dicts, one per payment period."""
 
@@ -80,7 +81,7 @@ def calculate_schedule(principal, annual_rate, years):
     return schedule, monthly_payment
 
 
-# ── Table Display ──────────────────────────────────────────────
+# Table Display
 def display_table(schedule):
     """Print the amortization schedule as a formatted table."""
 
@@ -100,7 +101,7 @@ def display_table(schedule):
     print("\n" + tabulate(rows, headers=headers, tablefmt="simple"))
 
 
-# ── Summary Display ──────────────────────────────────────────────
+# Summary Display
 def display_summary(principal, annual_rate, years, monthly_payment, schedule):
     """Print a concise loan summary."""
 
@@ -119,7 +120,7 @@ def display_summary(principal, annual_rate, years, monthly_payment, schedule):
     print("=" * 52 + "\n")
 
 
-# ── Chart ──────────────────────────────────────────────────────
+# Chart
 def plot_schedule(schedule, principal, annual_rate, years):
     """Generate and save a payment breakdown chart."""
 
@@ -148,9 +149,47 @@ def plot_schedule(schedule, principal, annual_rate, years):
     print("  Chart saved as / Gráfico guardado como: amortization_chart.png\n")
 
 
+# Export to CSV
+def export_to_csv(schedule, filename="amortization_schedule.csv"):
+    """Export the calculated schedule to a CSV file."""
+
+    # Define the keys from our dictionary to use as headers
+    headers = ["month", "payment", "interest", "capital", "balance"]
+
+    try:
+        with open(filename, mode="w", newline="", encoding="utf-8") as file:
+            writer = csv.DictWriter(file, fieldnames=headers)
+
+            # Write the header row
+            writer.writeheader()
+
+            # Write all the data rows from our list of dictionaries
+            writer.writerows(schedule)
+
+        print(f"  Data exported successfully to: {filename}")
+    except IOError as e:
+        print(f"  Error exporting to CSV: {e}")
+
 if __name__ == "__main__":
+    
+    # Input
     principal, annual_rate, years = get_inputs()
+
+    # Core Calculation
     schedule, monthly_payment = calculate_schedule(principal, annual_rate, years)
+
+    # Display Information
     display_table(schedule)
     display_summary(principal, annual_rate, years, monthly_payment, schedule)
-    plot_schedule(schedule, principal, annual_rate, years)
+
+    # Optional Chart
+    choice = input("Show chart? / ¿Mostrar gráfico? (y/n): ").strip().lower()
+    if choice == 'y':
+        plot_schedule(schedule, principal, annual_rate, years)
+
+    # Optional Export to CSV
+    choice = input("Export schedule to CSV? / ¿Exportar a CSV? (y/n): ").strip().lower()
+    if choice == 'y':
+        export_to_csv(schedule)
+    else:
+        print("Export skipped. Have a nice day! / Exportacion omitida. Que tenga un buen dia!")
