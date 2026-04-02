@@ -12,11 +12,14 @@
 - Formatted amortization table / Tabla de amortización formateada
 - Loan summary with totals / Resumen del préstamo con totales
 - Payment breakdown chart (saved as PNG) / Gráfico de desglose de pagos (guardado como PNG)
+- Payment breakdown file (saved as CSV) / Archivo del desglose de pagos (guardado como CSV)
 
 ## Requirements / Requisitos
 - Python 3.8 or higher / Python 3.8 o superior
 - tabulate
 - matplotlib
+- csv
+- os
 
 ## How to Run / Cómo Ejecutar
 1. Install dependencies / Instalar dependencias:
@@ -25,6 +28,10 @@
    python amortization.py
 3. Enter loan amount, interest rate, and term when prompted.
    Ingrese el monto, tasa de interés, y plazo cuando se le solicite.
+4. Tendra una opcion si quisiera obtener una grafica para ilustrar el prestamo. Ingrese y o n para hacer su decision.
+   You will be faced with the option to acquire a graph to illustrate the loan. Input y or n to make your decision.
+5. Tendra una opcion si quisiera obtener una archivo CSV del desglose del presatmo. Ingrese y o n para hacer su decision.
+   You will be faced with the option to acquire a CSV file about the breakdown of your loan. Input y or n to make your decision.
 
 Sample output:
 ![Amortization Chart](amortization_chart.png)
