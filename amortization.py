@@ -5,10 +5,10 @@ import matplotlib.ticker as mticker
 
 # Does not require pip
 import csv
+import os
 
 # Input Collection
 def get_inputs():
-    """Prompt the user for loan parameters with validation."""
 
     print("=" * 52)
     print("  LOAN AMORTIZATION SYSTEM / SISTEMA DE AMORTIZACIÓN")
@@ -46,7 +46,6 @@ def get_inputs():
 
 # Core Calculation
 def calculate_schedule(principal, annual_rate, years):
-    """Return a list of dicts, one per payment period."""
 
     monthly_rate = (annual_rate / 100) / 12
     total_months = years * 12
@@ -83,7 +82,6 @@ def calculate_schedule(principal, annual_rate, years):
 
 # Table Display
 def display_table(schedule):
-    """Print the amortization schedule as a formatted table."""
 
     rows = [
         [
@@ -103,7 +101,6 @@ def display_table(schedule):
 
 # Summary Display
 def display_summary(principal, annual_rate, years, monthly_payment, schedule):
-    """Print a concise loan summary."""
 
     total_interest = sum(row["interest"] for row in schedule)
     total_cost = principal + total_interest
@@ -122,7 +119,6 @@ def display_summary(principal, annual_rate, years, monthly_payment, schedule):
 
 # Chart
 def plot_schedule(schedule, principal, annual_rate, years):
-    """Generate and save a payment breakdown chart."""
 
     months   = [row["month"]    for row in schedule]
     interest = [row["interest"] for row in schedule]
@@ -144,28 +140,24 @@ def plot_schedule(schedule, principal, annual_rate, years):
     ax.set_xlim(1, len(months))
 
     plt.tight_layout()
-    plt.savefig("amortization_chart.png", dpi=150)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    plt.savefig(os.path.join(script_dir, "amortization_chart.png"), dpi=150)
     plt.show()
     print("  Chart saved as / Gráfico guardado como: amortization_chart.png\n")
 
 
 # Export to CSV
-def export_to_csv(schedule, filename="amortization_schedule.csv"):
-    """Export the calculated schedule to a CSV file."""
+def export_to_csv(schedule):
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    filename = os.path.join(script_dir, "amortization_schedule.csv")
 
-    # Define the keys from our dictionary to use as headers
     headers = ["month", "payment", "interest", "capital", "balance"]
 
     try:
         with open(filename, mode="w", newline="", encoding="utf-8") as file:
             writer = csv.DictWriter(file, fieldnames=headers)
-
-            # Write the header row
             writer.writeheader()
-
-            # Write all the data rows from our list of dictionaries
             writer.writerows(schedule)
-
         print(f"  Data exported successfully to: {filename}")
     except IOError as e:
         print(f"  Error exporting to CSV: {e}")
